@@ -1,0 +1,285 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-preview {
+    flex-grow: 1;
+    background: url(./images/bg-main-mobile.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100vw;
+    height: 240px;
+    position: relative;
+}
+
+@media (min-width: 50em) {
+    main {
+        flex-direction: row;
+    }
+
+    .card-preview {
+        background-image: url(./images/bg-main-desktop.png);
+        background-size: cover;
+        height: 100vh;
+        width: min(30vw, 483px);
+    }
+}
+
+.front {
+    position: absolute;
+    z-index: 1;
+    left: 3%;
+    top: 45%;
+
+}
+
+@media (min-width: 50em) {
+    .front {
+        top: 15%;
+        left: 35%;
+    }
+
+}
+
+.card>img {
+    width: min(80vw, 350px);
+    aspect-ratio: auto;
+    position: relative;
+
+}
+
+@media (min-width: 50em) {
+    .card>img {
+        width: min(30vw, 445px);
+        aspect-ratio: auto;
+    }
+}
+
+.card-grid {
+    position: absolute;
+    inset: 0;
+    padding: 0.8rem;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 30% 50% 20%;
+    color: #FFF;
+}
+
+@media (min-width: 50em) {
+    .card-grid {
+        padding: 1.2rem;
+    }
+}
+
+
+
+.back {
+    position: absolute;
+    top: 5%;
+    left: 17%;
+}
+
+@media (min-width: 50em) {
+    .back {
+        top: 55%;
+        left: 45%;
+    }
+}
+
+#card-logo {
+    grid-column: span 2;
+    z-index: inherit;
+}
+
+#card-logo>img {
+    height: 100%;
+}
+
+#card-num {
+    font-size: min(2.5vh, 3rem);
+    text-align: justify;
+    letter-spacing: 0.1rem;
+    grid-column: span 2;
+    z-index: inherit;
+    display: flex;
+    align-items: flex-end;
+}
+
+@media (min-width: 50em) {
+    #card-num {
+        font-size: min(1.8vw, 2rem);
+    }
+}
+
+#card-holder-name {
+    z-index: inherit;
+    display: flex;
+    align-items: flex-end;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+#card-exp-date {
+    z-index: inherit;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    font-size: 0.8rem;
+}
+
+#card-cvc {
+    position: absolute;
+    top: 42%;
+    right: 10%;
+    z-index: 2;
+    color: #FFF;
+}
+
+/* form */
+
+.input-form {
+    flex-grow: 2;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.card-form {
+    margin-top: 5rem;
+    padding: 1rem;
+    width: min(100%, 400px);
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
+    grid-template-rows: repeat(10, max-content);
+    column-gap: 0.3rem;
+    row-gap: 0.3rem;
+}
+
+@media (min-width: 50em) {
+    .card-form {
+        margin-top: 0;
+        margin-left: 10em;
+    }
+}
+
+label {
+    text-transform: uppercase;
+    height: fit-content;
+}
+
+input {
+    padding: 0.8rem;
+    width: 100%;
+    border-radius: 10px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: hsl(270, 3%, 87%);
+}
+
+input:focus {
+    outline: none;
+    border-color: hsl(249, 99%, 64%) hsl(278, 94%, 30%) hsl(278, 94%, 30%) hsl(249, 99%, 64%);
+}
+
+
+#name-label,
+#name,
+#card-number-label,
+#card-number,
+.error-message,
+#confirm-button {
+    grid-column: span 3;
+}
+
+.error-message {
+    font-size: 0.7rem;
+    color: hsl(0, 100%, 66%);
+}
+
+#exp-date-label {
+    grid-column: span 2;
+}
+
+#MM-error-message,
+#YY-error-message,
+#CVC-error-message {
+    grid-column: span 1;
+}
+
+.ty {
+    position: absolute;
+    margin-top: 5rem;
+    padding: 1rem;
+    width: min(100%, 400px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: -2;
+    opacity: 0%;
+}
+
+@media (min-width: 50em) {
+    .ty {
+        margin-top: 0;
+        margin-left: 10em;
+    }
+}
+
+.image-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+
+}
+
+.ty>div>h2 {
+    text-transform: uppercase;
+    letter-spacing: 0.5rem;
+    font-size: 2rem;
+    text-align: center;
+    padding: 0.5rem;
+}
+
+.ty>div>p {
+    text-align: center;
+    color: hsl(279, 6%, 55%);
+    padding: 0.5rem;
+    padding-bottom: 1.5rem;
+}
+
+button {
+    width: 100%;
+    padding: 1rem;
+    background-color: hsl(278, 68%, 11%);
+    color: hsl(0, 0%, 100%);
+    border-radius: 10px;
+    border: none;
+}
+
+button:hover,
+button.focus {
+    background-color: hsl(278, 68%, 22%);
+    color: hsl(0, 0%, 60%);
+}
+
+.attribution {
+    font-size: 11px;
+    text-align: center;
+}
+
+.attribution a {
+    color: hsl(228, 45%, 44%);
+}
