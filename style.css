@@ -18,6 +18,10 @@ main {
     width: 100vw;
     height: 240px;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 @media (min-width: 50em) {
@@ -34,23 +38,21 @@ main {
 }
 
 .front {
-    position: absolute;
+    position: relative;
     z-index: 1;
-    left: 3%;
-    top: 45%;
-
-}
+    width: min(75vw, 330px);
+    transform: translate(-5%, 110%);
+    }
 
 @media (min-width: 50em) {
     .front {
-        top: 15%;
-        left: 35%;
+        transform: translate(20%, -10%);
     }
 
 }
 
 .card>img {
-    width: min(80vw, 350px);
+    width: min(75vw, 330px);
     aspect-ratio: auto;
     position: relative;
 
@@ -78,21 +80,22 @@ main {
 @media (min-width: 50em) {
     .card-grid {
         padding: 1.2rem;
+        width: min(30vw, 445px);
     }
 }
 
 
 
 .back {
-    position: absolute;
-    top: 5%;
-    left: 17%;
+    position: relative;
+    width: min(75vw, 330px);
+    transform: translate(10%, -50%);
 }
 
 @media (min-width: 50em) {
     .back {
-        top: 55%;
-        left: 45%;
+    transform: translate(50%, 20%);
+    width: min(30vw, 445px);
     }
 }
 
@@ -106,7 +109,7 @@ main {
 }
 
 #card-num {
-    font-size: min(2.5vh, 3rem);
+    font-size: max(3vw, 1.2rem);
     text-align: justify;
     letter-spacing: 0.1rem;
     grid-column: span 2;
@@ -157,7 +160,7 @@ main {
 }
 
 .card-form {
-    margin-top: 5rem;
+    margin-top: 7rem;
     padding: 1rem;
     width: min(100%, 400px);
     display: grid;

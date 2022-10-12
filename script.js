@@ -60,21 +60,25 @@ function patternMatch({ input, template }) {
     }
 }
 
-const submitForm = document.querySelector('.card-form').addEventListener('submit', e => {
-    e.preventDefault()
+const confirmButton = document.querySelector('.card-form').addEventListener('submit', e => {
+    e.preventDefault();
     inputValidation();
     const errorPara = document.querySelectorAll('.error-message');
     let errors;
     errorPara.forEach(error => errors += error.innerText);
     console.log(errors);
     if (errors === 'undefined') {
-        document.querySelector('.ty').style.zIndex = '2';
-        document.querySelector('.ty').style.opacity = '100%';
-        document.querySelector('.card-form').style.opacity = '0%';
-    }
+        submitForm();
+    } 
 })
 
 const refreshButton = document.querySelector('.ty button').addEventListener('click', refreshPage);
+
+function submitForm() {
+    document.querySelector('.ty').style.zIndex = '2';
+    document.querySelector('.ty').style.opacity = '100%';
+    document.querySelector('.card-form').style.opacity = '0%';
+}
 
 function refreshPage() {
     window.location.reload();
@@ -91,7 +95,7 @@ function inputValidation(e) {
         }
         if (!blank && input.className == 'number') {
             num = checkDigit(input, `#${input.id}-error-message`);
-        }         
+        }
         if (num && input.id == 'card-number') {
             checkCardNumLength(input, `#${input.id}-error-message`);
         }
@@ -109,7 +113,7 @@ function inputValidation(e) {
 
 function checkName(input, placing) {
     let para = document.querySelector(placing);
-    if (!input.value.match(/^[A-z][a-z]+( [A-z][a-z]+){1,}$/)) {
+    if (!input.value.match(/^[A-z][A-z]+( [A-z][A-z]+){1,}$/)) {
         para.innerText = 'Name and surname';
         input.style.borderColor = 'hsl(0, 100%, 66%)';
         input.style.color = 'hsl(0, 100%, 66%)';
@@ -160,7 +164,7 @@ function checkDigit(cardNum, placing) {
         cardNum.style.borderColor = 'hsl(0, 100%, 66%)';
         cardNum.style.color = 'hsl(0, 100%, 66%)';
         flag = false;
-    } 
+    }
     return flag;
 }
 
