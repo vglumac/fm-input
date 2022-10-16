@@ -62,14 +62,9 @@ function patternMatch({ input, template }) {
 
 const confirmButton = document.querySelector('.card-form').addEventListener('submit', e => {
     e.preventDefault();
-    inputValidation();
-    const errorPara = document.querySelectorAll('.error-message');
-    let errors;
-    errorPara.forEach(error => errors += error.innerText);
-    console.log(errors);
-    if (errors === 'undefined') {
+    if (inputValidation()) {
         submitForm();
-    } 
+    }
 })
 
 const refreshButton = document.querySelector('.ty button').addEventListener('click', refreshPage);
@@ -84,76 +79,70 @@ function refreshPage() {
     window.location.reload();
 }
 
-function inputValidation(e) {
-    let blank;
-    let num;
+function inputValidation() {
+    let valid = false;
     const inputs = document.querySelectorAll('input');
     inputs.forEach((input) => {
+        let blank = false;
+        let num = false;
         blank = checkBlank(input, `#${input.id}-error-message`);
-        if (!blank && input.className != 'number') {
-            checkName(input, `#${input.id}-error-message`);
+        valid += blank;
+        if (blank && input.className != 'number') {
+            valid += checkName(input, `#${input.id}-error-message`);
         }
-        if (!blank && input.className == 'number') {
+        if (blank && input.className == 'number') {
             num = checkDigit(input, `#${input.id}-error-message`);
+            valid += num;
         }
         if (num && input.id == 'card-number') {
-            checkCardNumLength(input, `#${input.id}-error-message`);
+            valid += checkCardNumLength(input, `#${input.id}-error-message`);
         }
         if (num && input.id == 'MM') {
-            checkMonth(input, `#${input.id}-error-message`);
+            valid += checkMonth(input, `#${input.id}-error-message`);
         }
         if (num && input.id == 'YY') {
-            checkYear(input, `#${input.id}-error-message`);
+            valid += checkYear(input, `#${input.id}-error-message`);
         }
         if (num && input.id == 'CVC') {
-            checkCVC(input, `#${input.id}-error-message`);
+            valid += checkCVC(input, `#${input.id}-error-message`);
         }
     });
+    if (valid === 14) {
+        valid = true;
+    } else {
+        valid = false;
+    }
+    return valid;
+}
+
+function checkBlank(input, placing) {
+    let flag = true;
+    let para = document.querySelector(placing);
+    if (input.value == null || input.value == "" || input.value == " ") {
+        para.innerText = 'Can\'t be blank';
+        input.style.borderColor = 'hsl(0, 100%, 66%)';
+        flag = false;
+    } else {
+        para.innerText = '';
+        input.style.borderColor = 'revert';
+    }
+    return flag;
 }
 
 function checkName(input, placing) {
+    let flag = true;
     let para = document.querySelector(placing);
     if (!input.value.match(/^[A-z][A-z]+( [A-z][A-z]+){1,}$/)) {
         para.innerText = 'Name and surname';
         input.style.borderColor = 'hsl(0, 100%, 66%)';
         input.style.color = 'hsl(0, 100%, 66%)';
+        flag = false;
+    } else {
+        para.innerText = '';
+        input.style.borderColor = 'revert';
+        input.style.color = 'revert';
     }
-}
-
-function checkCVC(cardNum, placing) {
-    let para = document.querySelector(placing);
-    if (!cardNum.value.match(/^[0-9]{3}$/)) {
-        para.innerText = 'Three digits required';
-        cardNum.style.borderColor = 'hsl(0, 100%, 66%)';
-        cardNum.style.color = 'hsl(0, 100%, 66%)';
-    }
-}
-
-function checkYear(cardNum, placing) {
-    let para = document.querySelector(placing);
-    if (!cardNum.value.match(/^[0-9]{2}$/)) {
-        para.innerText = '01 - 99 only';
-        cardNum.style.borderColor = 'hsl(0, 100%, 66%)';
-        cardNum.style.color = 'hsl(0, 100%, 66%)';
-    }
-}
-
-function checkMonth(cardNum, placing) {
-    let para = document.querySelector(placing);
-    if (!cardNum.value.match(/^(0[1-9])|(1[0-2])$/)) {
-        para.innerText = '01 - 12 only';
-        cardNum.style.borderColor = 'hsl(0, 100%, 66%)';
-        cardNum.style.color = 'hsl(0, 100%, 66%)';
-    }
-}
-
-function checkCardNumLength(cardNum, placing) {
-    let para = document.querySelector(placing);
-    if (cardNum.value.length < 19) {
-        para.innerText = 'Card number must have 16 digits';
-        cardNum.style.borderColor = 'hsl(0, 100%, 66%)';
-        cardNum.style.color = 'hsl(0, 100%, 66%)';
-    }
+    return flag;
 }
 
 function checkDigit(cardNum, placing) {
@@ -164,18 +153,76 @@ function checkDigit(cardNum, placing) {
         cardNum.style.borderColor = 'hsl(0, 100%, 66%)';
         cardNum.style.color = 'hsl(0, 100%, 66%)';
         flag = false;
+    } else {
+        para.innerText = '';
+        cardNum.style.borderColor = 'revert';
+        cardNum.style.color = 'revert';
     }
     return flag;
 }
 
-function checkBlank(input, placing) {
-    let flag = false;
+function checkCVC(cardNum, placing) {
+    let flag = true;
     let para = document.querySelector(placing);
-    if (input.value == null || input.value == "" || input.value == " ") {
-        para.innerText = 'Can\'t be blank';
-        input.style.borderColor = 'hsl(0, 100%, 66%)';
-        flag = true;
-    } return flag;
+    if (!cardNum.value.match(/^[0-9]{3}$/)) {
+        para.innerText = 'Three digits required';
+        cardNum.style.borderColor = 'hsl(0, 100%, 66%)';
+        cardNum.style.color = 'hsl(0, 100%, 66%)';
+        flag = false;
+    } else {
+        para.innerText = '';
+        cardNum.style.borderColor = 'revert';
+        cardNum.style.color = 'revert';
+    }
+    return flag;
+}
+
+function checkYear(cardNum, placing) {
+    let flag = true;
+    let para = document.querySelector(placing);
+    if (!cardNum.value.match(/^[0-9]{2}$/)) {
+        para.innerText = '01 - 99 only';
+        cardNum.style.borderColor = 'hsl(0, 100%, 66%)';
+        cardNum.style.color = 'hsl(0, 100%, 66%)';
+        flag = false;
+    } else {
+        para.innerText = '';
+        cardNum.style.borderColor = 'revert';
+        cardNum.style.color = 'revert';
+    }
+    return flag;
+}
+
+function checkMonth(cardNum, placing) {
+    let flag = true;
+    let para = document.querySelector(placing);
+    if (!cardNum.value.match(/^(0[1-9])|(1[0-2])$/)) {
+        para.innerText = '01 - 12 only';
+        cardNum.style.borderColor = 'hsl(0, 100%, 66%)';
+        cardNum.style.color = 'hsl(0, 100%, 66%)';
+        flag = false;
+    } else {
+        para.innerText = '';
+        cardNum.style.borderColor = 'revert';
+        cardNum.style.color = 'revert';
+    }
+    return flag;
+}
+
+function checkCardNumLength(cardNum, placing) {
+    let flag = true;
+    let para = document.querySelector(placing);
+    if (cardNum.value.length < 19) {
+        para.innerText = 'Card number must have 16 digits';
+        cardNum.style.borderColor = 'hsl(0, 100%, 66%)';
+        cardNum.style.color = 'hsl(0, 100%, 66%)';
+        flag = false;
+    } else {
+        para.innerText = '';
+        cardNum.style.borderColor = 'revert';
+        cardNum.style.color = 'revert';
+    }
+    return flag;
 }
 
 updateCardInfo();
