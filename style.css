@@ -159,7 +159,7 @@ main {
 }
 
 .form {
-    margin-top: 7rem;
+    margin-top: 5.5rem;
     padding: 1rem;
     width: min(100%, 400px);
     display: grid;
@@ -181,9 +181,17 @@ main {
 }
 
 .form__label {
+    font-size: 0.8rem;
     text-transform: uppercase;
     height: fit-content;
 }
+
+@media (min-width: 50em) {
+    .form__label {
+        font-size: 1rem;
+    }
+}
+
 
 .form__input {
     padding: 0.8rem;
