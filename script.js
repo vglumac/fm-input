@@ -129,13 +129,10 @@ function inputValidation() {
 
 function checkInputValue(input, condition, text) {
     let message = input.parentNode.querySelector('.form__error-message');
-    console.log('usao u val')
     if (message && condition == true) {
-        console.log('ista meta isto odstojanje')
         return true;
     } 
     if (condition == true) {
-        console.log('nova poruka')
         insertErrorMessage(input, text);
         return true
     }
