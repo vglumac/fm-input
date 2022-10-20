@@ -37,15 +37,18 @@ main {
     }
 }
 
-.front {
+.card {
     position: relative;
-    z-index: 1;
     width: min(75vw, 330px);
+}
+
+.card--front {
+    z-index: 1;
     transform: translate(-5%, 110%);
-    }
+}
 
 @media (min-width: 50em) {
-    .front {
+    .card--front {
         transform: translate(20%, -10%);
     }
 
@@ -84,32 +87,28 @@ main {
     }
 }
 
-
-
-.back {
-    position: relative;
-    width: min(75vw, 330px);
+.card--back {
     transform: translate(10%, -50%);
 }
 
 @media (min-width: 50em) {
-    .back {
-    transform: translate(50%, 20%);
-    width: min(30vw, 445px);
+    .card--back {
+        transform: translate(50%, 20%);
+        width: min(30vw, 445px);
     }
 }
 
-#card-logo {
+.card--logo {
     grid-column: span 2;
     z-index: inherit;
 }
 
-#card-logo>img {
+.card--logo > img {
     height: 100%;
 }
 
-#card-num {
-    font-size: max(3vw, 1.2rem);
+.card--num {
+    font-size: max(3vw, 1.1rem);
     text-align: justify;
     letter-spacing: 0.1rem;
     grid-column: span 2;
@@ -119,12 +118,12 @@ main {
 }
 
 @media (min-width: 50em) {
-    #card-num {
+    .card--num {
         font-size: min(1.8vw, 2rem);
     }
 }
 
-#card-holder-name {
+.card--card-holder-name {
     z-index: inherit;
     display: flex;
     align-items: flex-end;
@@ -132,7 +131,7 @@ main {
     text-transform: uppercase;
 }
 
-#card-exp-date {
+.card--exp-date {
     z-index: inherit;
     display: flex;
     align-items: flex-end;
@@ -140,7 +139,7 @@ main {
     font-size: 0.8rem;
 }
 
-#card-cvc {
+.card--cvc {
     position: absolute;
     top: 42%;
     right: 10%;
@@ -150,7 +149,7 @@ main {
 
 /* form */
 
-.input-form {
+.form-container {
     flex-grow: 2;
     width: 100%;
     display: flex;
@@ -159,31 +158,36 @@ main {
     position: relative;
 }
 
-.card-form {
+.form {
     margin-top: 7rem;
     padding: 1rem;
     width: min(100%, 400px);
     display: grid;
-    grid-template-columns: 1fr 1fr 2fr;
-    grid-template-rows: repeat(10, max-content);
-    column-gap: 0.3rem;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(4, max-content);
+    column-gap: 0.5rem;
     row-gap: 0.3rem;
 }
 
+.grid-wide {
+    grid-column: span 3;
+}
+
 @media (min-width: 50em) {
-    .card-form {
+    .form {
         margin-top: 0;
         margin-left: 10em;
     }
 }
 
-label {
+.form__label {
     text-transform: uppercase;
     height: fit-content;
 }
 
-input {
+.form__input {
     padding: 0.8rem;
+    margin: 0.3rem 0;
     width: 100%;
     border-radius: 10px;
     border-width: 1px;
@@ -191,46 +195,50 @@ input {
     border-color: hsl(270, 3%, 87%);
 }
 
-input:focus {
+.form__input--narrow {
+    width: 45%;
+}
+
+.form__input:focus {
     outline: none;
     border-color: hsl(249, 99%, 64%) hsl(278, 94%, 30%) hsl(278, 94%, 30%) hsl(249, 99%, 64%);
 }
 
-
-#name-label,
-#name,
-#card-number-label,
-#card-number,
-.error-message,
-#confirm-button {
-    grid-column: span 3;
+.form__button {
+    width: 100%;
+    padding: 1rem;
+    background-color: hsl(278, 68%, 11%);
+    color: hsl(0, 0%, 100%);
+    border-radius: 10px;
+    border: none;
 }
 
-.error-message {
+.form__button:hover,
+.form__button.focus {
+    background-color: hsl(278, 68%, 22%);
+    color: hsl(0, 0%, 60%);
+}
+
+/* errors */
+
+.form__input--error {
+    border-color: hsl(0, 100%, 66%);
+    color: hsl(0, 100%, 66%);
+}
+
+.form__error-message {
     font-size: 0.7rem;
     color: hsl(0, 100%, 66%);
 }
 
-#exp-date-label {
-    grid-column: span 2;
-}
-
-#MM-error-message,
-#YY-error-message,
-#CVC-error-message {
-    grid-column: span 1;
-}
+/* "Thank you" message */
 
 .ty {
     position: absolute;
     margin-top: 5rem;
     padding: 1rem;
     width: min(100%, 400px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: -2;
-    opacity: 0%;
+    z-index: 2;
 }
 
 @media (min-width: 50em) {
@@ -241,14 +249,12 @@ input:focus {
 }
 
 .image-center {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: block;
+    margin-inline: auto;
     padding: 2rem;
-
 }
 
-.ty>div>h2 {
+.ty__title {
     text-transform: uppercase;
     letter-spacing: 0.5rem;
     font-size: 2rem;
@@ -256,27 +262,21 @@ input:focus {
     padding: 0.5rem;
 }
 
-.ty>div>p {
+.ty__text {
     text-align: center;
     color: hsl(279, 6%, 55%);
     padding: 0.5rem;
     padding-bottom: 1.5rem;
 }
 
-button {
-    width: 100%;
-    padding: 1rem;
-    background-color: hsl(278, 68%, 11%);
-    color: hsl(0, 0%, 100%);
-    border-radius: 10px;
-    border: none;
+/* hidden */
+
+.hidden {
+    z-index: -2; 
+    opacity: 0%;
 }
 
-button:hover,
-button.focus {
-    background-color: hsl(278, 68%, 22%);
-    color: hsl(0, 0%, 60%);
-}
+/* Attribution */
 
 .attribution {
     font-size: 11px;

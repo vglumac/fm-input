@@ -1,36 +1,31 @@
-
 function updateCardInfo() {
-    const cardPreview = document.querySelector("#card-num");
-    const cardNumber = document.querySelector("#card-number");
-    cardNumber.addEventListener('keyup', (e) => {
-        cardPreview.innerText = e.target.value;
-    })
+    const myForm = document.forms[0];
 
-    cardNumber.oninput = (e) => {
+    myForm.elements['card-number'].oninput = (e) => {
         e.target.value = patternMatch({
             input: e.target.value,
             template: "xxxx xxxx xxxx xxxx",
         });
     };
 
-    const monthPreview = document.querySelector("#mm-prev");
-    document.querySelector("#MM").addEventListener('keyup', (e) => {
-        monthPreview.innerText = e.target.value;
+    myForm.elements['name'].addEventListener('keyup', (e) => {
+        document.querySelector(".card--card-holder-name").innerText = e.target.value;
     })
 
-    const yearPreview = document.querySelector("#yy-prev");
-    document.querySelector("#YY").addEventListener('keyup', (e) => {
-        yearPreview.innerText = e.target.value;
+    myForm.elements['card-number'].addEventListener('keyup', (e) => {
+        document.querySelector(".card--num").innerText = e.target.value;
     })
 
-    const cvcPreview = document.querySelector("#card-cvc");
-    document.querySelector("#CVC").addEventListener('keyup', (e) => {
-        cvcPreview.innerText = e.target.value;
+    myForm.elements['MM'].addEventListener('keyup', (e) => {
+        document.querySelector(".card--mm").innerText = e.target.value;
     })
 
-    const namePreview = document.querySelector("#card-holder-name");
-    document.querySelector("#name").addEventListener('keyup', (e) => {
-        namePreview.innerText = e.target.value;
+    myForm.elements['YY'].addEventListener('keyup', (e) => {
+        document.querySelector(".card--yy").innerText = e.target.value;
+    })
+
+    myForm.elements['CVC'].addEventListener('keyup', (e) => {
+        document.querySelector(".card--cvc").innerText = e.target.value;
     })
 }
 
@@ -60,19 +55,18 @@ function patternMatch({ input, template }) {
     }
 }
 
-const confirmButton = document.querySelector('.card-form').addEventListener('submit', e => {
+const confirmButton = document.forms[0].addEventListener('submit', e => {
     e.preventDefault();
     if (inputValidation()) {
         submitForm();
     }
 })
 
-const refreshButton = document.querySelector('.ty button').addEventListener('click', refreshPage);
+const refreshButton = document.querySelector('.ty__button').addEventListener('click', refreshPage);
 
 function submitForm() {
-    document.querySelector('.ty').style.zIndex = '2';
-    document.querySelector('.ty').style.opacity = '100%';
-    document.querySelector('.card-form').style.opacity = '0%';
+    document.querySelector('.form').classList.add('hidden');
+    document.querySelector('.ty').classList.remove('hidden');
 }
 
 function refreshPage() {
@@ -80,149 +74,91 @@ function refreshPage() {
 }
 
 function inputValidation() {
-    let valid = false;
-    const inputs = document.querySelectorAll('input');
-    inputs.forEach((input) => {
-        let blank = false;
-        let num = false;
-        blank = checkBlank(input, `#${input.id}-error-message`);
-        valid += blank;
-        if (blank && input.className != 'number') {
-            valid += checkName(input, `#${input.id}-error-message`);
+    let flag = false;
+    let myForm = document.forms[0];
+    for (let i = 0; i < myForm.elements.length; i++) {
+        if (myForm.elements[i].tagName === 'BUTTON') {
+            continue;
         }
-        if (blank && input.className == 'number') {
-            num = checkDigit(input, `#${input.id}-error-message`);
-            valid += num;
+        let formItem = myForm.elements[i];
+
+        const conditions = {
+            input: {
+                message: 'Can\'t be blank',
+                condition: formItem.value == null || formItem.value == "" || formItem.value == " "
+            },
+            name: {
+                message: 'Name and surname required',
+                condition: !formItem.value.match(/^[A-z][A-z]+( [A-z][A-z]+){1,}$/),
+            },
+            number: {
+                message: 'Wrong format, numbers only',
+                condition: !formItem.value.match(/^[0-9 ]{1,}$/)
+            },
+            cardNumber: {
+                message: 'Card number must have 16 digits',
+                condition: formItem.value.length < 19
+            },
+            month: {
+                message: '01 - 12 only',
+                condition: !formItem.value.match(/^(0[1-9])|(1[0-2])$/)
+            },
+            year: {
+                message: '01 - 99 only',
+                condition: !formItem.value.match(/^[0-9]{2}$/)
+            },
+            cvc: {
+                message: 'Three digits required',
+                condition: !formItem.value.match(/^[0-9]{3}$/)
+            }
         }
-        if (num && input.id == 'card-number') {
-            valid += checkCardNumLength(input, `#${input.id}-error-message`);
+
+        for (let j = 0; j < Object.keys(conditions).length; j++) {
+
+            if (formItem.dataset[Object.keys(conditions)[j]] === '') {
+                flag += checkInputValue(formItem, conditions[Object.keys(conditions)[j]].condition, conditions[Object.keys(conditions)[j]].message);
+            }
         }
-        if (num && input.id == 'MM') {
-            valid += checkMonth(input, `#${input.id}-error-message`);
-        }
-        if (num && input.id == 'YY') {
-            valid += checkYear(input, `#${input.id}-error-message`);
-        }
-        if (num && input.id == 'CVC') {
-            valid += checkCVC(input, `#${input.id}-error-message`);
-        }
-    });
-    if (valid === 14) {
-        valid = true;
-    } else {
-        valid = false;
     }
-    return valid;
+    
+    if (flag > 0) {
+        return false
+    }
+    return true;
 }
 
-function checkBlank(input, placing) {
-    let flag = true;
-    let para = document.querySelector(placing);
-    if (input.value == null || input.value == "" || input.value == " ") {
-        para.innerText = 'Can\'t be blank';
-        input.style.borderColor = 'hsl(0, 100%, 66%)';
-        flag = false;
-    } else {
-        para.innerText = '';
-        input.style.borderColor = 'revert';
+function checkInputValue(input, condition, text) {
+    let message = input.parentNode.querySelector('.form__error-message');
+    console.log('usao u val')
+    if (message && condition == true) {
+        console.log('ista meta isto odstojanje')
+        return true;
+    } 
+    if (condition == true) {
+        console.log('nova poruka')
+        insertErrorMessage(input, text);
+        return true
     }
-    return flag;
+    removeErrorMessages(input);
+    return false;
 }
 
-function checkName(input, placing) {
-    let flag = true;
-    let para = document.querySelector(placing);
-    if (!input.value.match(/^[A-z][A-z]+( [A-z][A-z]+){1,}$/)) {
-        para.innerText = 'Name and surname';
-        input.style.borderColor = 'hsl(0, 100%, 66%)';
-        input.style.color = 'hsl(0, 100%, 66%)';
-        flag = false;
-    } else {
-        para.innerText = '';
-        input.style.borderColor = 'revert';
-        input.style.color = 'revert';
+function insertErrorMessage(input, text) {
+    let message = input.parentNode.querySelector('.form__error-message');
+    if (message) {
+        removeErrorMessages(message, input);
     }
-    return flag;
+    let newMessage = document.createElement('p');
+    newMessage.innerText = text;
+    newMessage.classList.add('form__error-message');
+    input.classList.add('form__input--error');
+    input.parentNode.appendChild(newMessage);
 }
 
-function checkDigit(cardNum, placing) {
-    let flag = true;
-    let para = document.querySelector(placing);
-    if (!cardNum.value.match(/^[0-9 ]{1,}$/)) {
-        para.innerText = 'Wrong format, numbers only';
-        cardNum.style.borderColor = 'hsl(0, 100%, 66%)';
-        cardNum.style.color = 'hsl(0, 100%, 66%)';
-        flag = false;
-    } else {
-        para.innerText = '';
-        cardNum.style.borderColor = 'revert';
-        cardNum.style.color = 'revert';
-    }
-    return flag;
-}
-
-function checkCVC(cardNum, placing) {
-    let flag = true;
-    let para = document.querySelector(placing);
-    if (!cardNum.value.match(/^[0-9]{3}$/)) {
-        para.innerText = 'Three digits required';
-        cardNum.style.borderColor = 'hsl(0, 100%, 66%)';
-        cardNum.style.color = 'hsl(0, 100%, 66%)';
-        flag = false;
-    } else {
-        para.innerText = '';
-        cardNum.style.borderColor = 'revert';
-        cardNum.style.color = 'revert';
-    }
-    return flag;
-}
-
-function checkYear(cardNum, placing) {
-    let flag = true;
-    let para = document.querySelector(placing);
-    if (!cardNum.value.match(/^[0-9]{2}$/)) {
-        para.innerText = '01 - 99 only';
-        cardNum.style.borderColor = 'hsl(0, 100%, 66%)';
-        cardNum.style.color = 'hsl(0, 100%, 66%)';
-        flag = false;
-    } else {
-        para.innerText = '';
-        cardNum.style.borderColor = 'revert';
-        cardNum.style.color = 'revert';
-    }
-    return flag;
-}
-
-function checkMonth(cardNum, placing) {
-    let flag = true;
-    let para = document.querySelector(placing);
-    if (!cardNum.value.match(/^(0[1-9])|(1[0-2])$/)) {
-        para.innerText = '01 - 12 only';
-        cardNum.style.borderColor = 'hsl(0, 100%, 66%)';
-        cardNum.style.color = 'hsl(0, 100%, 66%)';
-        flag = false;
-    } else {
-        para.innerText = '';
-        cardNum.style.borderColor = 'revert';
-        cardNum.style.color = 'revert';
-    }
-    return flag;
-}
-
-function checkCardNumLength(cardNum, placing) {
-    let flag = true;
-    let para = document.querySelector(placing);
-    if (cardNum.value.length < 19) {
-        para.innerText = 'Card number must have 16 digits';
-        cardNum.style.borderColor = 'hsl(0, 100%, 66%)';
-        cardNum.style.color = 'hsl(0, 100%, 66%)';
-        flag = false;
-    } else {
-        para.innerText = '';
-        cardNum.style.borderColor = 'revert';
-        cardNum.style.color = 'revert';
-    }
-    return flag;
+function removeErrorMessages(input) {
+    let messages = input.parentNode.querySelectorAll('.form__error-message');
+    messages.forEach(message => message.parentNode.removeChild(message));
+    input.classList.remove('form__input--error');
 }
 
 updateCardInfo();
