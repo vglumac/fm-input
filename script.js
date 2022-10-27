@@ -140,9 +140,7 @@ function checkInputValue(input, condition, text) {
     }
     removeErrorMessages(input);
     return false;
-
 }
-
 
 function insertErrorMessage(input, text) {
     let newMessage = document.createElement('p');
