@@ -9,23 +9,23 @@ function updateCardInfo() {
     };
 
     myForm.elements['name'].addEventListener('keyup', (e) => {
-        document.querySelector(".card--card-holder-name").innerText = e.target.value;
+        document.querySelector(".card__card-holder-name").innerText = e.target.value;
     })
 
     myForm.elements['card-number'].addEventListener('keyup', (e) => {
-        document.querySelector(".card--num").innerText = e.target.value;
+        document.querySelector(".card__num").innerText = e.target.value;
     })
 
     myForm.elements['MM'].addEventListener('keyup', (e) => {
-        document.querySelector(".card--mm").innerText = e.target.value;
+        document.querySelector(".card__mm").innerText = e.target.value;
     })
 
     myForm.elements['YY'].addEventListener('keyup', (e) => {
-        document.querySelector(".card--yy").innerText = e.target.value;
+        document.querySelector(".card__yy").innerText = e.target.value;
     })
 
     myForm.elements['CVC'].addEventListener('keyup', (e) => {
-        document.querySelector(".card--cvc").innerText = e.target.value;
+        document.querySelector(".card__cvc").innerText = e.target.value;
     })
 }
 
@@ -120,7 +120,7 @@ function inputValidation() {
             }
         }
     }
-    
+
     if (flag > 0) {
         return false
     }
@@ -129,22 +129,22 @@ function inputValidation() {
 
 function checkInputValue(input, condition, text) {
     let message = input.parentNode.querySelector('.form__error-message');
+
     if (message && condition == true) {
         return true;
-    } 
+    }
     if (condition == true) {
+        removeErrorMessages(input);
         insertErrorMessage(input, text);
-        return true
+        return true;
     }
     removeErrorMessages(input);
     return false;
+
 }
 
+
 function insertErrorMessage(input, text) {
-    let message = input.parentNode.querySelector('.form__error-message');
-    if (message) {
-        removeErrorMessages(message, input);
-    }
     let newMessage = document.createElement('p');
     newMessage.innerText = text;
     newMessage.classList.add('form__error-message');
@@ -153,9 +153,11 @@ function insertErrorMessage(input, text) {
 }
 
 function removeErrorMessages(input) {
-    let messages = input.parentNode.querySelectorAll('.form__error-message');
-    messages.forEach(message => message.parentNode.removeChild(message));
-    input.classList.remove('form__input--error');
+    let message = input.parentNode.querySelector('.form__error-message');
+    if (message) {
+        message.parentNode.removeChild(message);
+        input.classList.remove('form__input--error');
+    }
 }
 
 updateCardInfo();

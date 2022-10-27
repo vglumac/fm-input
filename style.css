@@ -98,16 +98,16 @@ main {
     }
 }
 
-.card--logo {
+.card__logo {
     grid-column: span 2;
     z-index: inherit;
 }
 
-.card--logo > img {
+.card__logo > img {
     height: 100%;
 }
 
-.card--num {
+.card__num {
     font-size: max(3vw, 1.1rem);
     text-align: justify;
     letter-spacing: 0.1rem;
@@ -118,12 +118,12 @@ main {
 }
 
 @media (min-width: 50em) {
-    .card--num {
+    .card__num {
         font-size: min(1.8vw, 2rem);
     }
 }
 
-.card--card-holder-name {
+.card__card-holder-name {
     z-index: inherit;
     display: flex;
     align-items: flex-end;
@@ -131,7 +131,7 @@ main {
     text-transform: uppercase;
 }
 
-.card--exp-date {
+.card__exp-date {
     z-index: inherit;
     display: flex;
     align-items: flex-end;
@@ -139,7 +139,7 @@ main {
     font-size: 0.8rem;
 }
 
-.card--cvc {
+.card__cvc {
     position: absolute;
     top: 42%;
     right: 10%;
