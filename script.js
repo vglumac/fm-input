@@ -91,13 +91,13 @@ function inputValidation() {
                 message: 'Name and surname required',
                 condition: !formItem.value.match(/^[A-z][A-z]+( [A-z][A-z]+){1,}$/),
             },
-            number: {
-                message: 'Wrong format, numbers only',
-                condition: !formItem.value.match(/^[0-9 ]{1,}$/)
-            },
             cardNumber: {
                 message: 'Card number must have 16 digits',
                 condition: formItem.value.length < 19
+            },
+            number: {
+                message: 'Wrong format, numbers only',
+                condition: !formItem.value.match(/^[0-9 ]{1,}$/)
             },
             month: {
                 message: '01 - 12 only',
