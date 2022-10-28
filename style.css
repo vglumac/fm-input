@@ -163,14 +163,18 @@ main {
     padding: 1rem;
     width: min(100%, 400px);
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(4, max-content);
+    grid-template-columns: 0.25fr 0.25fr 0.5fr;
+    grid-template-rows: repeat(5, max-content);
     column-gap: 0.5rem;
     row-gap: 0.3rem;
 }
 
 .grid-wide {
     grid-column: span 3;
+}
+
+.label-wide {
+    grid-column: span 2;
 }
 
 @media (min-width: 50em) {
@@ -201,10 +205,6 @@ main {
     border-width: 1px;
     border-style: solid;
     border-color: hsl(270, 3%, 87%);
-}
-
-.form__input--narrow {
-    width: 45%;
 }
 
 .form__input:focus {

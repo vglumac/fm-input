@@ -43,13 +43,19 @@
           <label class="form__label">Card Number</label>
           <input class="form__input" data-input data-number data-card-number type="text" name="card-number" placeholder="e.g. 1234 5678 9123 0000">
         </div>
-        <div>
+        <div class=" label-wide">
           <label class="form__label">Exp. Date (MM/YY)</label>
-          <input class="form__input form__input--narrow" data-input data-number data-month type="text" name="MM" placeholder="MM" maxlength="2">
-          <input class="form__input form__input--narrow" data-input data-number data-year type="text" name="YY" placeholder="YY" maxlength="2">
         </div>
         <div>
           <label class="form__label">CVC</label>
+        </div>
+        <div>
+          <input class="form__input" data-input data-number data-month type="text" name="MM" placeholder="MM" maxlength="2">
+        </div>
+        <div>
+          <input class="form__input" data-input data-number data-year type="text" name="YY" placeholder="YY" maxlength="2">
+        </div>
+        <div>
           <input class="form__input" data-input data-number data-cvc type="text" name="CVC" placeholder=" e.g. 123" maxlength="3">
         </div>
         <button class="form__button grid-wide" type="submit">Confirm</button>
